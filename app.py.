@@ -1,0 +1,78 @@
+ import streamlit as st
+from datetime import datetime
+
+st.set_page_config(
+    page_title="Instagram Reporting Helper",
+    page_icon="📢"
+)
+
+st.title("📢 Instagram Reporting Helper")
+st.write("Prepare genuine Instagram complaints.")
+
+username = st.text_input(
+    "Instagram username",
+    placeholder="example_username"
+)
+
+category = st.selectbox(
+    "Select violation",
+    [
+        "Harassment or bullying",
+        "Scam or fraud",
+        "Impersonation",
+        "Nudity or sexual content",
+        "Hate speech",
+        "Other"
+    ]
+)
+
+details = st.text_area(
+    "Explain what happened",
+    placeholder="Describe the incident and provide accurate details..."
+)
+
+evidence = st.text_input(
+    "Evidence reference (optional)",
+    placeholder="Screenshot filename or link"
+)
+
+if st.button("Generate complaint"):
+    if not username.strip() or not details.strip():
+        st.warning("Please enter username and incident details.")
+    else:
+        complaint = f"""
+Subject: Instagram Safety Report
+
+Account: @{username.strip()}
+Violation category: {category}
+
+Incident details:
+{details.strip()}
+
+Evidence reference:
+{evidence.strip() or "Not provided"}
+
+I am submitting this report in good faith.
+Please review the information and evidence
+under Instagram's Community Guidelines.
+
+Thank you.
+"""
+        st.success("Complaint prepared!")
+        st.text_area(
+            "Your complaint",
+            value=complaint,
+            height=250
+        )
+
+        st.download_button(
+            "Download complaint",
+            data=complaint,
+            file_name="instagram_complaint.txt",
+            mime="text/plain"
+        )
+
+st.caption(
+    "This tool prepares reports only. "
+    "It does not automatically submit reports."
+)
